@@ -1,119 +1,110 @@
-import kotlin.math.exp
-import kotlin.properties.Delegates
-
 fun main(args: Array<String>) {
-    val expr = mutableListOf(Item.value(20), Item.value(10), Item.value(30))
+    val stack = StaticStack(3)
 
-    val rc = mutableListOf(1, 2, 3)
-    println("list element " + rc[1])
+    stack.push(2)
+    stack.push(3)
+    stack.push(4)
 
-    val r = Calculator(expr)
-    r.run()
-    r.stack.printStack()
+    stack.printStack()
+
+    println(stack.pop())
+    stack.printStack()
+
+
+    val expr = listOf(Item.value(1), Item.value(3), Item.add())
+
+    val calculator = Calculator(expr)
+    calculator.run()
 }
 
-class Calculator( private val expr: MutableList<Item> ) {
+class Calculator (private val expr: List<Item>){
 
-    private var ip: Int = 0
-    val stack = Stack(expr.size)
+    private val stack = StaticStack(expr.size)
+    private var instructionPointer = 0
 
 
     fun run() {
-        while (ip < expr.size) {
-            step()
-        }
-    }
-
-    private fun step() {
-        val nxt = expr[0]
-        ip += 1
-
-        when (nxt.type) {
-            ItemType.ADD -> {
-                val y = stack.pop()
-                val x = stack.pop()
-                stack.push(y + x)
+        while (instructionPointer < expr.size) {
+            if (expr[instructionPointer].itemType == ItemType.VALUE) {
+                stack.push(expr[instructionPointer].value)
+                println("adding value")
+            } else {
+                stack.push(null)
             }
-            ItemType.SUB -> {}
-            ItemType.MUL -> {}
-            ItemType.DIV -> {}
-            ItemType.VALUE -> {
-                stack.push(nxt.value)
-            }
+            instructionPointer++
         }
+
+        stack.printStack()
     }
 }
 
 
-class Item {
-
+class Item (var itemType: ItemType) {
+    var value: Int = 0
     companion object {
-
-        lateinit var type: ItemType
-        var value = 0
-
         fun add(): Item {
-            this.type = ItemType.ADD
-            return this
-        }
-
-        fun sub(): Item {
-            this.type = ItemType.SUB
-            return this
-        }
-
-        fun mul(): Item {
-            this.type = ItemType.MUL
-            return this
-        }
-
-        fun div(): Item {
-            this.type = ItemType.DIV
-            return this
-
+            val item = Item(ItemType.ADD)
+            return item
         }
 
         fun value(value: Int): Item {
-            this.type = ItemType.VALUE
-            this.value = value
-            return Item()
+            val item = Item(ItemType.VALUE)
+            item.value = value
+            return item
         }
     }
-}
-
-class Stack(private val stackSize: Int?) {
-    // Stack pointer starts at -1 because Kotlin arrays start at index 0 hence first push moves stack pointer to 0
-    private var stackPointer = -1
-    private val array = mutableListOf<Int>()
-
-    /**
-     * Retrieves element from stack at stack pointer position
-     */
-    fun pop(): Int {
-        return array[stackPointer--]
-    }
-
-    fun push(element: Int) {
-        array.add(element)
-        stackPointer++
-        println(stackPointer)
-    }
-
-    fun printStack() {
-        println(array.toString())
-    }
-}
-
-enum class StackType {
-    STATIC, DYNAMIC
 }
 
 enum class ItemType {
     ADD, SUB, MUL, DIV, VALUE
 }
 
-class SimpleLexer {
-    fun getInput() {
+class StaticStack(private var size: Int) {
+    private var array = Array<Int?>(size) {it}
+    private var stackPointer = -1
+
+    fun push(value: Int?) {
+        stackPointer++
+        array[stackPointer] = value
+    }
+
+    fun pop(): Int? {
+        val r = array[stackPointer--]
+        this.array = array.removeLast()
+        return r
+    }
+
+    fun printStack() {
+        println(array.toList())
+    }
+}
+
+
+inline fun <reified T> Array<T>.removeLast(): Array<T> {
+    val tempArray = Array(this.size - 1) {
+        it as T
+    }
+
+    for (each in 0..this.size - 2) {
+        tempArray[each] = this[each]
+    }
+    return tempArray
+}
+
+
+class DynamicStack {
+    private val array = mutableListOf<Int>()
+    private var stackPointer = 0
+
+    fun push(value: Int) {
+        array.add(value)
+    }
+
+    fun pop(): Int {
+        return array.removeLast()
+    }
+
+    fun printStack() {
 
     }
 }
