@@ -1,3 +1,7 @@
+package stack
+
+import removeLastAndReturnArray
+
 class StaticStack(size: Int): Stack {
     private var array = IntArray(size)
     private var stackPointer = -1

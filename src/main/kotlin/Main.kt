@@ -1,3 +1,5 @@
+import lexer.SimpleLexer
+
 fun main(args: Array<String>) {
 //    val stack = StaticStack(3)
 //
@@ -11,9 +13,10 @@ fun main(args: Array<String>) {
 //    stack.printStack()
 
 
-    val expr = listOf(Item.value(10), Item.value(2), Item.value(5), Item.mul(), Item.add())
+//    val expr = listOf(Item.value(3), Item.value(4), Item.mul(), Item.value(5), Item.value(6), Item.mul(), Item.add())
 
-    val calculator = Calculator(expr, StackType.DYNAMIC)
+    val expr = SimpleLexer.parse("1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 + * + * + * + * + * + * + * +")
+    val calculator = Calculator(expr, StackType.STATIC)
     calculator.run()
 }
 

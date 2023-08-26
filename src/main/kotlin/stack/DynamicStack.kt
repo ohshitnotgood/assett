@@ -1,3 +1,7 @@
+package stack
+
+import removeLastAndReturnArray
+
 class DynamicStack: Stack {
     private val array = mutableListOf<Int>()
 
@@ -31,9 +35,3 @@ class MutableIntList(vararg elements: Int) {
     }
 }
 
-interface Stack {
-    fun printStack()
-    fun push(value: Int)
-
-    fun pop(): Int
-}

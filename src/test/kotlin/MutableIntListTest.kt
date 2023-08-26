@@ -1,10 +1,9 @@
-import org.hamcrest.MatcherAssert
-import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.Test
+import stack.MutableIntList
 
 class MutableIntListTest {
 
-    var mutableList = MutableIntList(1, 3, 4)
+    private var mutableList = MutableIntList(1, 3, 4)
     @Test
     fun add() {
         mutableList.add(5)

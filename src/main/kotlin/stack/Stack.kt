@@ -1,0 +1,7 @@
+package stack
+interface Stack {
+    fun printStack()
+    fun push(value: Int)
+
+    fun pop(): Int
+}

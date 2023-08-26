@@ -1,3 +1,6 @@
+import stack.DynamicStack
+import stack.Stack
+import stack.StaticStack
 
 class Calculator (private val expr: List<Item>, stackType: StackType?){
 
