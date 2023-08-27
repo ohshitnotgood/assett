@@ -3,17 +3,18 @@ package stack
 import removeLastAndReturnArray
 
 class DynamicStack: Stack {
-    private val array = mutableListOf<Int>()
-
-    private val r = MutableIntList(1, 3, 4)
-    private var stackPointer = 0
-
+    private var array = IntArray(0)
     override fun push(value: Int) {
-        array.add(value)
+        val tempArray = IntArray(array.size + 1)
+        for (each in array.indices) tempArray[each] = array[each]
+        tempArray[array.size] = value
+        this.array = tempArray
     }
 
     override fun pop(): Int {
-        return array.removeLast()
+        val lastItem = array.last()
+        this.array = array.removeLastAndReturnArray()
+        return lastItem
     }
 
     override fun printStack() {
@@ -21,17 +22,4 @@ class DynamicStack: Stack {
     }
 }
 
-class MutableIntList(vararg elements: Int) {
-    private var array = elements
-
-    fun add(value: Int) {
-        val tempArray = IntArray(array.size + 1)
-        tempArray[array.size] = value
-        this.array = tempArray
-    }
-
-    fun removeLast() {
-        this.array = array.removeLastAndReturnArray()
-    }
-}
 

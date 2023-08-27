@@ -16,7 +16,7 @@ fun main(args: Array<String>) {
 //    val expr = listOf(Item.value(3), Item.value(4), Item.mul(), Item.value(5), Item.value(6), Item.mul(), Item.add())
 
     val expr = SimpleLexer.parse("1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 + * + * + * + * + * + * + * +")
-    val calculator = Calculator(expr, StackType.STATIC)
+    val calculator = Calculator(expr, StackType.DYNAMIC)
     calculator.run()
 }
 

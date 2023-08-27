@@ -1,0 +1,111 @@
+\documentclass{article}
+
+\usepackage{}
+
+
+\title{HP-35 calculator: Looking back at an old algorithm through modern technology}
+\author{Praanto Samadder}
+
+
+
+\begin{document}
+\maketitle
+
+\abstract{
+The objective is to look at two implementations of stacks through implementing
+the classic Reverse Polish algorithm.
+}
+
+
+\section{Calculator}
+The \texttt{Calculator} class is implemented similar to the problem sheet with one minor difference: the use of \texttt{StackType} enum passed through the constructor to use static and dynamic stacks. \texttt{expr} is marked with \texttt{private val} because of their relevance in the functions in the class.
+
+\begin{verbatim}
+class Calculator (private val expr: List<Item>, stackType: StackType?){
+    private var stack: Stack
+    private var instructionPointer = 0
+    
+    init {
+        stack = if (stackType == StackType.STATIC) StaticStack(expr.size)
+        else DynamicStack()
+    }
+
+    fun run() {
+        while (instructionPointer < expr.size) { step() }
+    }
+
+    private fun step() {}
+}
+
+enum class StackType {
+    STATIC, DYNAMIC
+}
+
+\end{verbatim}
+
+
+
+\section{Stack}
+\subsection{Stack interface}
+The stack interface is implemented 
+
+\begin{verbatim}
+interface Stack {
+    fun push(value: Int)
+    fun pop(): Int
+}
+\end{verbatim}
+
+\subsection{Static Stack}
+\begin{verbatim}
+import removeLastAndReturnArray
+
+class StaticStack(size: Int): Stack {
+    private var array = IntArray(size)
+    private var stackPointer = -1
+
+    override fun push(value: Int) {
+        stackPointer++
+        array[stackPointer] = value
+    }
+
+    override fun pop(): Int {
+        val r = array[stackPointer--]
+        this.array = array.removeLastAndReturnArray()
+        return r
+    }
+}
+\end{verbatim}
+
+
+
+
+\subsection{Dynamic Stack}
+Kotlin already has dynamic stacks built into it through it's built-in \texttt{mutableArrayOf()} function. However, while we will not be making use of that for this project, we will be using another one of Kotlin's features called extension functions. 
+
+We can therefore extend our static \texttt{IntArray} with functions to add and remove elements \textit{dynamically} from the list.
+
+
+
+\begin{verbatim}
+import removeLastAndReturnArray
+
+class DynamicStack: Stack {
+    private var array = IntArray(0)
+    override fun push(value: Int) {
+        val tempArray = IntArray(array.size + 1)
+        for (each in array.indices) tempArray[each] = array[each]
+        tempArray[array.size] = value
+        this.array = tempArray
+    }
+
+    override fun pop(): Int {
+        val lastItem = array.last()
+        this.array = array.removeLastAndReturnArray()
+        return lastItem
+    }
+}
+\end{verbatim}
+
+
+\end{document}

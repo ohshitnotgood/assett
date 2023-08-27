@@ -9,22 +9,12 @@ class Calculator (private val expr: List<Item>, stackType: StackType?){
 
 
     init {
-        stack = if (stackType == StackType.STATIC) {
-            StaticStack(expr.size)
-        } else {
-            DynamicStack()
-        }
+        stack = if (stackType == StackType.STATIC) StaticStack(expr.size)
+        else DynamicStack()
     }
 
     fun run() {
         while (instructionPointer < expr.size) {
-//            if (expr[instructionPointer].itemType == ItemType.VALUE) {
-//                stack.push(expr[instructionPointer].value)
-//                println("adding value")
-//            } else {
-//                stack.push(null)
-//            }
-//            instructionPointer++
             step()
         }
 
