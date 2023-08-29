@@ -57,6 +57,8 @@ interface Stack {
 \end{verbatim}
 
 \subsection{Static Stack}
+The size of the stack is determined in the 
+
 \begin{verbatim}
 import removeLastAndReturnArray
 
@@ -81,11 +83,14 @@ class StaticStack(size: Int): Stack {
 
 
 \subsection{Dynamic Stack}
-Kotlin already has dynamic stacks built into it through it's built-in \texttt{mutableArrayOf()} function. However, while we will not be making use of that for this project, we will be using another one of Kotlin's features called extension functions. 
+Kotlin already has dynamic stacks built into it through it's built-in \texttt{mutableArrayOf()} function. However, we will not be using that for our purpose here.
 
-We can therefore extend our static \texttt{IntArray} with functions to add and remove elements \textit{dynamically} from the list.
+The \texttt{push()} and \texttt{pop()} function are used to modify the size of the array as soon as an element is added or removed from the stack. Both \texttt{push()} and \texttt{pop()} functions will create a temporary array that is one element larger or smaller in size respectively and then copy the old array into the temporary array. In the final step, the temporary array replaces the main array.
 
 
+\texttt{pop()} is making use of a Kotlin extension function that removes and 
+
+\pagebreak
 
 \begin{verbatim}
 import removeLastAndReturnArray
@@ -106,6 +111,70 @@ class DynamicStack: Stack {
     }
 }
 \end{verbatim}
+
+
+\section{Benchmark}
+Benchmarking the algorithm is done by measuring the time difference between beginning and the end of the algorithm and by measuring memory allocation of each stack implementation.
+
+\subsection{Time benchmark}
+
+We are using two functions: \texttt{autoPush()} and \texttt{autoPop()} to populate and de-populate our stack. The functions are implemented as follows:
+
+\begin{verbatim}
+    private fun autoPush() {
+        for (each in 0..< 1024) {
+            stack.push(Random.nextInt(0, 1000))
+        }
+    }
+
+    private fun autoPop() {
+        for (each in 0..< 1024) {
+            stack.pop()
+        }
+    }
+\end{verbatim}
+
+The benchmark is done with a test function.
+
+\begin{verbatim}
+    @Test 
+    fun benchmark() {
+        val startTime = Date().time
+        autoPush()
+        autoPop()
+        val endTime = Date().time
+        println("Time taken: " + (endTime - startTime) + "ms")
+    }
+\end{verbatim}
+
+\subsection{Memory benchmark}
+Memory usage is measured
+
+\subsection{Benchmark device}
+Benchmarking is done on a 2022 Apple MacBook Air with an M1 processor and 8GB of shared memory.
+
+\subsection{Results}
+
+When running this test, the static stack takes around 6ms to finish executing whereas
+
+
+
+
+
+
+
+\begin{verbatim}
+
+\end{verbatim}
+
+
+
+
+
+
+
+
+
 
 
 \end{document}
