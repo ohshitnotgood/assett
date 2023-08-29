@@ -4,9 +4,11 @@ import org.junit.jupiter.api.Test
 import java.util.*
 import kotlin.random.Random
 
+
 class DynamicStackTest {
     private val stackSize = 1024
     private val stack = DynamicStack()
+
     @Test
     fun benchmark() {
         val startTime = Date().time
@@ -14,6 +16,7 @@ class DynamicStackTest {
         autoPop()
         val endTime = Date().time
         println("Time taken: " + (endTime - startTime) + "ms")
+
     }
 
     private fun autoPush() {
